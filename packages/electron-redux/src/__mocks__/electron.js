@@ -6,11 +6,13 @@ export const webContents = {
 
 export const ipcMain = {
   on: jest.fn(),
+  handle: jest.fn(),
 };
 
 export const ipcRenderer = {
   on: jest.fn(),
   send: jest.fn(),
+  invoke: jest.fn(),
 };
 
 export const remote = {

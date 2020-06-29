@@ -15,7 +15,7 @@ describe('forwardToMain', () => {
     const action = () => {};
     validateAction.mockReturnValue(false);
 
-    forwardToMain()(next)(action);
+    forwardToMain(ipcRenderer)()(next)(action);
 
     expect(next).toHaveBeenCalledTimes(1);
     expect(next).toHaveBeenCalledWith(action);
@@ -25,7 +25,7 @@ describe('forwardToMain', () => {
     const next = jest.fn();
     const action = { type: '@@SOMETHING' };
 
-    forwardToMain()(next)(action);
+    forwardToMain(ipcRenderer)()(next)(action);
 
     expect(next).toHaveBeenCalledTimes(1);
     expect(next).toHaveBeenCalledWith(action);
@@ -35,7 +35,7 @@ describe('forwardToMain', () => {
     const next = jest.fn();
     const action = { type: 'redux-form' };
 
-    forwardToMain()(next)(action);
+    forwardToMain(ipcRenderer)()(next)(action);
 
     expect(next).toHaveBeenCalledTimes(1);
     expect(next).toHaveBeenCalledWith(action);
@@ -50,7 +50,7 @@ describe('forwardToMain', () => {
       },
     };
 
-    forwardToMain()(next)(action);
+    forwardToMain(ipcRenderer)()(next)(action);
 
     expect(next).toHaveBeenCalledTimes(1);
     expect(next).toHaveBeenCalledWith(action);
@@ -65,7 +65,7 @@ describe('forwardToMain', () => {
       },
     };
 
-    forwardToMain()(next)(action);
+    forwardToMain(ipcRenderer)()(next)(action);
 
     expect(ipcRenderer.send).toHaveBeenCalledTimes(1);
     expect(ipcRenderer.send).toHaveBeenCalledWith('redux-action', action);
@@ -84,7 +84,7 @@ describe('forwardToMainWithParams', () => {
     const next = jest.fn();
     const action = { type: '@@SOMETHING' };
 
-    forwardToMainWithParams()()(next)(action);
+    forwardToMainWithParams()(ipcRenderer)()(next)(action);
 
     expect(ipcRenderer.send).toHaveBeenCalledTimes(1);
     expect(ipcRenderer.send).toHaveBeenCalledWith('redux-action', action);
@@ -96,7 +96,7 @@ describe('forwardToMainWithParams', () => {
     const next = jest.fn();
     const action = { type: 'redux-form' };
 
-    forwardToMainWithParams()()(next)(action);
+    forwardToMainWithParams()(ipcRenderer)()(next)(action);
 
     expect(ipcRenderer.send).toHaveBeenCalledTimes(1);
     expect(ipcRenderer.send).toHaveBeenCalledWith('redux-action', action);
@@ -108,7 +108,7 @@ describe('forwardToMainWithParams', () => {
     const next = jest.fn();
     const action = { type: '@@SOMETHING' };
 
-    forwardToMainWithParams({ blacklist: [/^@@/] })()(next)(action);
+    forwardToMainWithParams({ blacklist: [/^@@/] })(ipcRenderer)()(next)(action);
 
     expect(next).toHaveBeenCalledTimes(1);
     expect(next).toHaveBeenCalledWith(action);

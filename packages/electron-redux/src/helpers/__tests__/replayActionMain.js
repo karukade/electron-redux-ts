@@ -4,6 +4,9 @@ import replayActionMain from '../replayActionMain';
 jest.unmock('../replayActionMain');
 
 describe('replayActionMain', () => {
+  beforeEach(() => {
+    ipcMain.handle.mockClear();
+  });
   it('should replay any actions received', () => {
     const store = {
       dispatch: jest.fn(),
@@ -25,7 +28,7 @@ describe('replayActionMain', () => {
     expect(store.dispatch).toHaveBeenCalledWith(payload);
   });
 
-  it('should return the current state from the global', () => {
+  it('should handle get initial state action', () => {
     const initialState = { initial: 'state' };
     const newState = { new: 'state' };
     const store = {
@@ -39,10 +42,16 @@ describe('replayActionMain', () => {
 
     replayActionMain(store);
 
-    expect(global.getReduxState()).toEqual(JSON.stringify(initialState));
+    expect(ipcMain.handle).toHaveBeenCalledTimes(1);
+    expect(ipcMain.handle.mock.calls[0][0]).toBe('redux-get-initial-state');
+    expect(ipcMain.handle.mock.calls[0][1]).toBeInstanceOf(Function);
+
+    const handler = ipcMain.handle.mock.calls[0][1];
+
+    expect(handler()).toEqual(JSON.stringify(initialState));
     expect(store.getState).toHaveBeenCalledTimes(1);
 
-    expect(global.getReduxState()).toEqual(JSON.stringify(newState));
+    expect(handler()).toEqual(JSON.stringify(newState));
     expect(store.getState).toHaveBeenCalledTimes(2);
   });
 });

@@ -5,13 +5,17 @@ const {
   getInitialStateRenderer,
   createAliasedAction,
 } = require('electron-redux');
+const { ipcRenderer } = require('electron');
 const reducers = require('../reducers');
+let store;
 
 // setup store
-const initialState = getInitialStateRenderer();
-const store = createStore(reducers, initialState, applyMiddleware(forwardToMain));
-
-replayActionRenderer(store);
+async function setupStore() {
+  const initialState = await getInitialStateRenderer(ipcRenderer);
+  const store = createStore(reducers, initialState, applyMiddleware(forwardToMain(ipcRenderer)));
+  replayActionRenderer(ipcRenderer, store);
+  return store;
+}
 
 // set up renderer
 function mount() {
@@ -41,7 +45,11 @@ function renderValue() {
   document.getElementById('value').innerHTML = store.getState().toString();
 }
 
-mount();
-renderValue();
+async function init() {
+  store = await setupStore();
+  mount();
+  renderValue();
+  store.subscribe(renderValue);
+}
 
-store.subscribe(renderValue);
+init();

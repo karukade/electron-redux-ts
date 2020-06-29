@@ -10,7 +10,7 @@ describe('replayActionRenderer', () => {
     };
     const payload = 123;
 
-    replayActionRenderer(store);
+    replayActionRenderer(ipcRenderer, store);
 
     expect(ipcRenderer.on).toHaveBeenCalledTimes(1);
     expect(ipcRenderer.on.mock.calls[0][0]).toBe('redux-action');

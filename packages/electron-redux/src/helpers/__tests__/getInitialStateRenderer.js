@@ -1,4 +1,4 @@
-import { remote } from 'electron';
+import { ipcRenderer } from 'electron';
 import getInitialStateRenderer from '../getInitialStateRenderer';
 
 jest.unmock('../getInitialStateRenderer');
@@ -6,8 +6,9 @@ jest.unmock('../getInitialStateRenderer');
 describe('getInitialStateRenderer', () => {
   it('should return the initial state', () => {
     const state = { foo: 456 };
-    remote.getGlobal.mockImplementation(() => () => JSON.stringify(state));
-
-    expect(getInitialStateRenderer()).toEqual(state);
+    ipcRenderer.invoke.mockImplementation(() => Promise.resolve(JSON.stringify(state)));
+    return getInitialStateRenderer(ipcRenderer).then(initialState =>
+      expect(initialState).toEqual(state),
+    );
   });
 });
