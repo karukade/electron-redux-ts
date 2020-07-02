@@ -12,13 +12,15 @@ describe('validateAction', () => {
         foo: 'bar',
       },
     };
-    expect(validateAction(action)).toBeTruthy();
+    expect(validateAction(action as any)).toBeTruthy();
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  const thunkAction: any = () => {};
   it('should reject non-FSA-compliant actions', () => {
     expect(validateAction({})).toBeFalsy();
     expect(validateAction({ meta: {} })).toBeFalsy();
-    expect(validateAction(() => {})).toBeFalsy();
-    expect(validateAction([])).toBeFalsy();
+    expect(validateAction(thunkAction)).toBeFalsy();
+    expect(validateAction([] as any)).toBeFalsy();
   });
 });

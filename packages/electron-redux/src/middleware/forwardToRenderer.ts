@@ -1,7 +1,8 @@
+import { Middleware } from 'redux';
 import { webContents } from 'electron';
 import validateAction from '../helpers/validateAction';
 
-const forwardToRenderer = () => next => (action) => {
+const forwardToRenderer: Middleware = () => (next) => (action) => {
   if (!validateAction(action)) return next(action);
   if (action.meta && action.meta.scope === 'local') return next(action);
 

@@ -19,9 +19,11 @@
     "start": "electron .",
     "start:webpack": "electron-webpack dev",
     "build:webpack": "electron-webpack",
-    "test": "yarn build:webpack && jest ."
+    "proxy:set": "no_proxy=\"127.0.0.1,localhost\" NO_PROXY=\"127.0.0.1,localhost\"",
+    "test": "yarn proxy:set && yarn build:webpack && jest ."
   },
   "devDependencies": {
+    "electron-webpack-ts": "^4.0.1",
     "eslint": "^7.3.1",
     "jest": "^26.0.0",
     "spectron": "^11.0.0"

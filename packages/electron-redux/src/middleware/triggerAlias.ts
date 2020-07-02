@@ -1,10 +1,10 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-unused-vars */
+import { Middleware } from 'redux';
 import assert from 'assert';
 import { ALIASED } from '../actions/alias';
 import aliasRegistry from '../registry/alias';
 
-const triggerAlias = store => next => (action) => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const triggerAlias: Middleware = (store) => (next) => (action) => {
   // TODO: store.dispatch() instead to not skip any middleware
   if (action.type === ALIASED) {
     assert(action.meta && action.meta.trigger, 'No trigger defined');

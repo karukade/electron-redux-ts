@@ -1,13 +1,16 @@
+import { mocked } from 'ts-jest/utils';
 import triggerAlias from '../triggerAlias';
 import aliasRegistry from '../../registry/alias';
 
 jest.unmock('../triggerAlias');
 
+const mockedAliasRegistry = mocked(aliasRegistry);
+
 describe('triggerAlias', () => {
   it('should pass an action through if not ALIAS', () => {
     const next = jest.fn();
     const action = { type: 'SOMETHING' };
-    triggerAlias()(next)(action);
+    triggerAlias({} as any)(next)(action);
 
     expect(next).toHaveBeenCalledTimes(1);
     expect(next).toHaveBeenCalledWith(action);
@@ -29,9 +32,9 @@ describe('triggerAlias', () => {
       },
     };
 
-    aliasRegistry.get.mockImplementation(() => trigger);
+    mockedAliasRegistry.get.mockImplementation(() => trigger);
 
-    triggerAlias()(next)(aliasedAction);
+    triggerAlias({} as any)(next)(aliasedAction);
 
     expect(trigger).toHaveBeenCalledTimes(1);
     expect(trigger).toHaveBeenCalledWith(...payload);
@@ -54,9 +57,9 @@ describe('triggerAlias', () => {
       },
     };
 
-    aliasRegistry.get.mockImplementation(() => trigger);
+    mockedAliasRegistry.get.mockImplementation(() => trigger);
 
-    triggerAlias()(next)(aliasedAction);
+    triggerAlias({} as any)(next)(aliasedAction);
 
     expect(trigger).toHaveBeenCalledTimes(1);
 
@@ -77,10 +80,10 @@ describe('triggerAlias', () => {
       payload,
     };
 
-    aliasRegistry.get.mockImplementation(() => trigger);
+    mockedAliasRegistry.get.mockImplementation(() => trigger);
 
     expect(() => {
-      triggerAlias()(next)(aliasedAction);
+      triggerAlias({} as any)(next)(aliasedAction);
     }).toThrowError('No trigger defined');
   });
 
@@ -98,10 +101,10 @@ describe('triggerAlias', () => {
       meta: {},
     };
 
-    aliasRegistry.get.mockImplementation(() => trigger);
+    mockedAliasRegistry.get.mockImplementation(() => trigger);
 
     expect(() => {
-      triggerAlias()(next)(aliasedAction);
+      triggerAlias({} as any)(next)(aliasedAction);
     }).toThrowError('No trigger defined');
   });
 
@@ -116,10 +119,10 @@ describe('triggerAlias', () => {
       },
     };
 
-    aliasRegistry.get.mockImplementation(() => undefined);
+    mockedAliasRegistry.get.mockImplementation(() => undefined as any);
 
     expect(() => {
-      triggerAlias()(next)(aliasedAction);
+      triggerAlias({} as any)(next)(aliasedAction);
     }).toThrowError('Trigger alias MY_OTHER_ACTION not found');
   });
 });

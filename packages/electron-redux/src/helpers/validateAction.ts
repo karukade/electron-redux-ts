@@ -1,9 +1,9 @@
 import debug from 'debug';
-import { isFSA } from './fluxStandardAction';
+import { isFSA, FsaType } from './fluxStandardAction';
 
 const log = debug('electron-redux:validateAction');
 
-export default function validateAction(action) {
+export default function validateAction(action: FsaType): boolean {
   if (!isFSA(action)) {
     log('WARNING! Action not FSA-compliant', action);
 

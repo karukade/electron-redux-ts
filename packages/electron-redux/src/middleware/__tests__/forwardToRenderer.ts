@@ -1,14 +1,17 @@
+import { mocked } from 'ts-jest/utils';
 import { webContents } from 'electron';
 import forwardToRenderer from '../forwardToRenderer';
 
 jest.unmock('../forwardToRenderer');
+
+const mokedWebContents = mocked(webContents);
 
 describe('forwardToRenderer', () => {
   it('should pass an action through to the main store', () => {
     const next = jest.fn();
     const action = { type: 'SOMETHING' };
 
-    forwardToRenderer()(next)(action);
+    forwardToRenderer({} as any)(next)(action);
 
     expect(next).toHaveBeenCalledTimes(1);
     expect(next).toHaveBeenCalledWith(action);
@@ -23,9 +26,11 @@ describe('forwardToRenderer', () => {
       },
     };
     const send = jest.fn();
-    webContents.getAllWebContents.mockImplementation(() => [{ send }]);
+    mokedWebContents.getAllWebContents.mockImplementation(() => [
+      { send } as any,
+    ]);
 
-    forwardToRenderer()(next)(action);
+    forwardToRenderer({} as any)(next)(action);
 
     expect(send).toHaveBeenCalledTimes(1);
     expect(send).toHaveBeenCalledWith('redux-action', {
@@ -46,9 +51,11 @@ describe('forwardToRenderer', () => {
       },
     };
     const send = jest.fn();
-    webContents.getAllWebContents.mockImplementation(() => [{ send }]);
+    mokedWebContents.getAllWebContents.mockImplementation(() => [
+      { send } as any,
+    ]);
 
-    forwardToRenderer()(next)(action);
+    forwardToRenderer({} as any)(next)(action);
 
     expect(next).toHaveBeenCalledTimes(1);
     expect(next).toHaveBeenCalledWith(action);

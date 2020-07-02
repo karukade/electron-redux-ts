@@ -1,4 +1,6 @@
-function counter(state, action) {
+import { Reducer } from 'redux';
+
+const counter: Reducer<number, { type: string }> = (state, action): number => {
   if (typeof state === 'undefined') {
     return 0;
   }
@@ -11,6 +13,6 @@ function counter(state, action) {
     default:
       return state;
   }
-}
+};
 
-module.exports = counter;
+export default counter;

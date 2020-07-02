@@ -1,18 +1,22 @@
-const path = require('path');
-const url = require('url');
-const { app, BrowserWindow } = require('electron');
-const { createStore, applyMiddleware } = require('redux');
-const {
+import path from 'path';
+import url from 'url';
+import { app, BrowserWindow } from 'electron';
+import { createStore, applyMiddleware } from 'redux';
+import {
   forwardToRenderer,
   triggerAlias,
   replayActionMain,
   createAliasedAction,
-} = require('electron-redux');
-const reducers = require('../reducers');
+} from 'electron-redux';
+import reducers from '../reducers';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
-const store = createStore(reducers, 0, applyMiddleware(triggerAlias, forwardToRenderer));
+const store = createStore(
+  reducers,
+  0,
+  applyMiddleware(triggerAlias, forwardToRenderer)
+);
 
 replayActionMain(store);
 
@@ -38,14 +42,16 @@ function createWindow() {
   }
 
   if (isDevelopment) {
-    mainWindow.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`);
+    mainWindow.loadURL(
+      `http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`
+    );
   } else {
     mainWindow.loadURL(
       url.format({
         pathname: path.join(__dirname, '../renderer/index.html'),
         protocol: 'file',
         slashes: true,
-      }),
+      })
     );
   }
 

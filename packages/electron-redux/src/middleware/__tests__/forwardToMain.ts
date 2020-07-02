@@ -1,21 +1,25 @@
+import { mocked } from 'ts-jest/utils';
 import { ipcRenderer } from 'electron';
 import forwardToMain, { forwardToMainWithParams } from '../forwardToMain';
 import validateAction from '../../helpers/validateAction';
 
 jest.unmock('../forwardToMain');
 
+const mockedValidateAction = mocked(validateAction);
+
 describe('forwardToMain', () => {
   beforeEach(() => {
-    validateAction.mockReturnValue(true);
+    mockedValidateAction.mockReturnValue(true);
   });
 
   it("should pass an action through if it doesn't pass validation (FSA)", () => {
     const next = jest.fn();
     // thunk action
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     const action = () => {};
-    validateAction.mockReturnValue(false);
+    mockedValidateAction.mockReturnValue(false);
 
-    forwardToMain(ipcRenderer)()(next)(action);
+    forwardToMain(ipcRenderer)({} as any)(next)(action);
 
     expect(next).toHaveBeenCalledTimes(1);
     expect(next).toHaveBeenCalledWith(action);
@@ -25,7 +29,7 @@ describe('forwardToMain', () => {
     const next = jest.fn();
     const action = { type: '@@SOMETHING' };
 
-    forwardToMain(ipcRenderer)()(next)(action);
+    forwardToMain(ipcRenderer)({} as any)(next)(action);
 
     expect(next).toHaveBeenCalledTimes(1);
     expect(next).toHaveBeenCalledWith(action);
@@ -35,7 +39,7 @@ describe('forwardToMain', () => {
     const next = jest.fn();
     const action = { type: 'redux-form' };
 
-    forwardToMain(ipcRenderer)()(next)(action);
+    forwardToMain(ipcRenderer)({} as any)(next)(action);
 
     expect(next).toHaveBeenCalledTimes(1);
     expect(next).toHaveBeenCalledWith(action);
@@ -50,7 +54,7 @@ describe('forwardToMain', () => {
       },
     };
 
-    forwardToMain(ipcRenderer)()(next)(action);
+    forwardToMain(ipcRenderer)({} as any)(next)(action);
 
     expect(next).toHaveBeenCalledTimes(1);
     expect(next).toHaveBeenCalledWith(action);
@@ -65,7 +69,7 @@ describe('forwardToMain', () => {
       },
     };
 
-    forwardToMain(ipcRenderer)()(next)(action);
+    forwardToMain(ipcRenderer)({} as any)(next)(action);
 
     expect(ipcRenderer.send).toHaveBeenCalledTimes(1);
     expect(ipcRenderer.send).toHaveBeenCalledWith('redux-action', action);
@@ -77,14 +81,14 @@ describe('forwardToMain', () => {
 describe('forwardToMainWithParams', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    validateAction.mockReturnValue(true);
+    mockedValidateAction.mockReturnValue(true);
   });
 
   it('should forward an action through if it starts with @@', () => {
     const next = jest.fn();
     const action = { type: '@@SOMETHING' };
 
-    forwardToMainWithParams()(ipcRenderer)()(next)(action);
+    forwardToMainWithParams()(ipcRenderer)({} as any)(next)(action);
 
     expect(ipcRenderer.send).toHaveBeenCalledTimes(1);
     expect(ipcRenderer.send).toHaveBeenCalledWith('redux-action', action);
@@ -96,7 +100,7 @@ describe('forwardToMainWithParams', () => {
     const next = jest.fn();
     const action = { type: 'redux-form' };
 
-    forwardToMainWithParams()(ipcRenderer)()(next)(action);
+    forwardToMainWithParams()(ipcRenderer)({} as any)(next)(action);
 
     expect(ipcRenderer.send).toHaveBeenCalledTimes(1);
     expect(ipcRenderer.send).toHaveBeenCalledWith('redux-action', action);
@@ -108,7 +112,9 @@ describe('forwardToMainWithParams', () => {
     const next = jest.fn();
     const action = { type: '@@SOMETHING' };
 
-    forwardToMainWithParams({ blacklist: [/^@@/] })(ipcRenderer)()(next)(action);
+    forwardToMainWithParams({ blacklist: [/^@@/] })(ipcRenderer)({} as any)(
+      next
+    )(action);
 
     expect(next).toHaveBeenCalledTimes(1);
     expect(next).toHaveBeenCalledWith(action);
