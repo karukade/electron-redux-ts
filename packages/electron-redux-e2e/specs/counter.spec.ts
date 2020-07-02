@@ -1,7 +1,7 @@
-const { Application } = require('spectron');
+import { Application } from 'spectron';
 
 describe('Counter', () => {
-  let app;
+  let app: Application;
 
   beforeEach(async () => {
     jest.setTimeout(6000);
@@ -10,7 +10,7 @@ describe('Counter', () => {
       args: ['.'],
       startTimeout: 5000,
       host: process.env.CHROMEDRIVER_HOST || 'localhost',
-      port: process.env.CHROMEDRIVER_PORT || 9515,
+      port: Number(process.env.CHROMEDRIVER_PORT) || 9515,
     });
 
     await app.start();
@@ -31,19 +31,19 @@ describe('Counter', () => {
     expect(await app.client.getText('#value')).toEqual('1');
   });
 
-  // it('Decreases the count by one on click', async () => {
-  //   expect(await app.client.getText('#value')).toEqual('0');
+  it('Decreases the count by one on click', async () => {
+    expect(await app.client.getText('#value')).toEqual('0');
 
-  //   await app.client.click('#decrement');
+    await app.client.click('#decrement');
 
-  //   expect(await app.client.getText('#value')).toEqual('-1');
-  // });
+    expect(await app.client.getText('#value')).toEqual('-1');
+  });
 
-  // it('Increases the count by one on clicking the aliased action', async () => {
-  //   expect(await app.client.getText('#value')).toEqual('0');
+  it('Increases the count by one on clicking the aliased action', async () => {
+    expect(await app.client.getText('#value')).toEqual('0');
 
-  //   await app.client.click('#incrementAliased');
+    await app.client.click('#incrementAliased');
 
-  //   expect(await app.client.getText('#value')).toEqual('1');
-  // });
+    expect(await app.client.getText('#value')).toEqual('1');
+  });
 });
