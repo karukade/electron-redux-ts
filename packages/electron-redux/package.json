@@ -2,14 +2,18 @@
   "name": "electron-redux",
   "version": "1.5.3",
   "description": "Use redux in the main and browser process in electron",
-  "main": "dist/index.js",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/types/",
   "files": [
     "dist/**"
   ],
   "scripts": {
     "test": "rm -rf coverage && jest --coverage",
     "lint": "eslint 'src/**/*'",
-    "build": "rm -rf dist && tsc",
+    "build:esm": "tsc --module es2015 --outDir ./dist/esm",
+    "build:cjs": "tsc --module commonjs --outDir ./dist/cjs",
+    "build": "rm -rf dist && yarn build:esm && yarn build:cjs",
     "prepare": "yarn build",
     "prepush": "yarn test && yarn build"
   },
