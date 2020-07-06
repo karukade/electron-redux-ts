@@ -1,7 +1,7 @@
 import { Store } from 'redux';
-import { ipcMain } from 'electron';
+import { IpcMain } from 'electron';
 
-export default function replayActionMain(store: Store): void {
+export default function replayActionMain(ipcMain: IpcMain, store: Store): void {
   ipcMain.on('redux-action', (event, payload) => {
     store.dispatch(payload);
   });

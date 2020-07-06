@@ -18,7 +18,7 @@ describe('replayActionMain', () => {
     };
     const payload = 123;
 
-    replayActionMain(store as any);
+    replayActionMain(ipcMain, store as any);
 
     expect(mockedIpcMain.on).toHaveBeenCalledTimes(1);
     expect(mockedIpcMain.on.mock.calls[0][0]).toBe('redux-action');
@@ -43,7 +43,7 @@ describe('replayActionMain', () => {
     store.getState.mockReturnValueOnce(initialState);
     store.getState.mockReturnValueOnce(newState);
 
-    replayActionMain(store as any);
+    replayActionMain(ipcMain, store as any);
 
     expect(mockedIpcMain.handle).toHaveBeenCalledTimes(1);
     expect(mockedIpcMain.handle.mock.calls[0][0]).toBe(

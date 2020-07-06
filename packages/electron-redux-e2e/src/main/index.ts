@@ -1,6 +1,6 @@
 import path from 'path';
 import url from 'url';
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, webContents, ipcMain } from 'electron';
 import { createStore, applyMiddleware } from 'redux';
 import {
   forwardToRenderer,
@@ -15,10 +15,10 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 const store = createStore(
   reducers,
   0,
-  applyMiddleware(triggerAlias, forwardToRenderer)
+  applyMiddleware(triggerAlias, forwardToRenderer(webContents))
 );
 
-replayActionMain(store);
+replayActionMain(ipcMain, store);
 
 // having to do this currently because of https://github.com/hardchor/electron-redux/issues/58
 createAliasedAction('INCREMENT_ALIASED', () => ({ type: 'INCREMENT' }));

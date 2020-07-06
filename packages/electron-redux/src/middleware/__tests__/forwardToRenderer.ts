@@ -11,7 +11,7 @@ describe('forwardToRenderer', () => {
     const next = jest.fn();
     const action = { type: 'SOMETHING' };
 
-    forwardToRenderer({} as any)(next)(action);
+    forwardToRenderer(webContents)({} as any)(next)(action);
 
     expect(next).toHaveBeenCalledTimes(1);
     expect(next).toHaveBeenCalledWith(action);
@@ -30,7 +30,7 @@ describe('forwardToRenderer', () => {
       { send } as any,
     ]);
 
-    forwardToRenderer({} as any)(next)(action);
+    forwardToRenderer(webContents)({} as any)(next)(action);
 
     expect(send).toHaveBeenCalledTimes(1);
     expect(send).toHaveBeenCalledWith('redux-action', {
@@ -55,7 +55,7 @@ describe('forwardToRenderer', () => {
       { send } as any,
     ]);
 
-    forwardToRenderer({} as any)(next)(action);
+    forwardToRenderer(webContents)({} as any)(next)(action);
 
     expect(next).toHaveBeenCalledTimes(1);
     expect(next).toHaveBeenCalledWith(action);
