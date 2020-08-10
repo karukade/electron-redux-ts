@@ -1,6 +1,6 @@
 {
-  "name": "electron-redux",
-  "version": "1.5.3",
+  "name": "@karukade/electron-redux-ts",
+  "version": "0.0.1",
   "description": "Use redux in the main and browser process in electron",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -8,11 +8,7 @@
   "files": [
     "dist/**"
   ],
-  "sideEffects": [
-    "dist/esm/helpers/createAliasedAction.js",
-    "dist/esm/helpers/replayActionMain.js",
-    "dist/esm/helpers/replayActionRenderer.js"
-  ],
+  "publishConfig": { "registry": "https://npm.pkg.github.com/" },
   "scripts": {
     "test": "rm -rf coverage && jest --coverage",
     "lint": "eslint 'src/**/*'",
@@ -28,13 +24,13 @@
     "react",
     "desktop"
   ],
-  "author": "Burkhard Reffeling <burkhard.reffeling@gmail.com> (http://www.burgiblog.com)",
+  "author": "Kadekaru Shiro <gaaadaaa16@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/hardchor/electron-redux.git"
+    "url": "https://github.com/karukade/electron-redux-ts.git"
   },
-  "homepage": "https://github.com/hardchor/electron-redux/tree/master/packages/electron-redux",
-  "bugs": "https://github.com/hardchor/electron-redux/issues",
+  "homepage": "https://github.com/karukade/electron-redux-ts.git",
+  "bugs": "https://github.com/karukade/electron-redux-ts/issues",
   "license": "MIT",
   "dependencies": {
     "debug": "^4.1.1",
